@@ -14,7 +14,11 @@ import java.util.List;
 
 public class Repository {
 
-    private final String api = "https://42f96a0f-5170-43ab-8d49-5893096fa17b.mock.pstmn.io";
+    private final String api;
+
+    public Repository(String api){
+        this.api = api;
+    }
 
     public List<RepositoryResponse> getRepositories(String user) {
         List<RepositoryResponse> repositoryResponses = new ArrayList<>();
@@ -22,7 +26,7 @@ public class Repository {
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(api + "/users/" + user + "/repos"))
                     .GET()
                     .build();
-            HttpResponse response = HttpClient.newHttpClient().send(request,
+            HttpResponse<?> response = HttpClient.newHttpClient().send(request,
                     HttpResponse.BodyHandlers.ofString());
             ObjectMapper objectMapper = new ObjectMapper();
             repositoryResponses = objectMapper
@@ -30,9 +34,7 @@ public class Repository {
                     .forType(new TypeReference<List<RepositoryResponse>>(){})
                     .readValue(response.body().toString());
         }
-         catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+         catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
         return repositoryResponses;
