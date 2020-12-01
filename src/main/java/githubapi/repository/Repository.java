@@ -1,6 +1,7 @@
 package githubapi.repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import githubapi.dto.RepositoryResponse;
 
@@ -29,6 +30,7 @@ public class Repository {
             HttpResponse<?> response = HttpClient.newHttpClient().send(request,
                     HttpResponse.BodyHandlers.ofString());
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
             repositoryResponses = objectMapper
                     .reader()
                     .forType(new TypeReference<List<RepositoryResponse>>(){})

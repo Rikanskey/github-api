@@ -12,4 +12,11 @@ public class RepositoryTest {
         List<RepositoryResponse> repositoryResponses = repository.getRepositories("Rikanskey");
         Assert.assertEquals(2, repositoryResponses.size());
     }
+
+    @Test
+    public void getRepositoriesGithubApiTest() {
+        Repository repository = new Repository("https://api.github.com");
+        List<RepositoryResponse> repositoryResponses = repository.getRepositories("Rikanskey");
+        Assert.assertEquals(4, repositoryResponses.size());
+    }
 }
